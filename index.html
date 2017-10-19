@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<script>
+	var multiplier = 1;
+	var cookiecount = 1;
+	var autoClick = 0;
+	var farms = 0;
+	function update(){
+		document.getElementById("text").value = cookiecount;
+		document.title = cookiecount + " Cookies";
+
+		document.getElementById("amountMultiplier").innerHTML = "Multiplier upgrade x" + (multiplier+1);
+		document.getElementById("amountMultiplier2").innerHTML = "x" + (multiplier+1);
+		document.getElementById("costMultiplier").innerHTML = ((multiplier+1)*100) + " Cookies";
+		document.getElementById("currentMultiplier").innerHTML = "Your current Multiplier is x" + multiplier;
+
+		document.getElementById("amountAutoClick").innerHTML = "You own " +autoClick+ " Auto Clickers";
+		document.getElementById("costAutoClick").innerHTML = ((autoClick+1)*12) + " Cookies";
+
+		document.getElementById("amountFarms").innerHTML = "You own " + farms + " Farms"; 
+		document.getElementById("costFarm").innerHTML = ((farms+1)*15) + " Cookies"; 
+
+		document.getElementById("cookiespersecond").innerHTML = "You are earning "+ ((autoClick + 2*farms )*multiplier) +" cookies per second"
+	}
+
+	function timer(){
+		cookiecount = cookiecount + autoClick*multiplier;
+		cookiecount = cookiecount + (farms*2)*multiplier;
+		update();
+	}
+
+	setInterval(timer,1000);
+</script>
+
+
+<html>
+<head>
+<title>0 Cookies</title>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body style="background-color: black;">
+ 
+<h3 align="center" id="cookiespersecond" style="color: blue;">You are earning 0 cookies per second</h3>
+<div class="row">
+<div class="col-sm-4">
+</div>
+<div class="col-sm-7">
+	<a href="#" onclick="add()">
+		<img src="cookie.png" height="300px" width="300px">
+	</a>
+	<br><br>
+	<p style="color:grey; font-size: 16px;">You got <input type="text" id="text" disabled style="text-align: center;"> Cookies
+	<br><br><br>
+
+	<input type="button" onclick="save()" value="Save">
+	<input type="button" onclick="load()" value="Load">
+
+<br><br>
+</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-4" >
+	<div class="thumbnail">
+		<p id="amountMultiplier">Multiplier upgrade x2</p>
+		<button>
+		<a href="#" onclick="buyMultiplier();"><span id="amountMultiplier2">x2</span></a>
+		</button>
+		<p id="costMultiplier">200 Cookies</p>
+		<p id="currentMultiplier">Your current Multiplier is x 1</p>
+	</div>
+	</div>
+
+
+	<div class="col-sm-4" >
+	<div class="thumbnail">
+		<p>Buy 1 Auto Clicker</p>
+		<button>
+		<a href="#" onclick="buyAutoClick();"><img src="click.png" height="50px" width="50px"></a>
+		</button>
+		<p id="costAutoClick"> Cookies</p>
+		<p id="amountAutoClick"> You own 0 Auto Clickers</p>
+	</div>
+	</div>	
+	
+
+	<div class="col-sm-4" >
+	<div class="thumbnail">
+		<p>Buy a farm </p>
+		<button height="50px" width="50px">
+		<a href="#" onclick="buyFarm();"><img src="farm.jpg" height="80px" width="80px"></a>
+		</button>
+		<p id="costFarm">15 Cookies</p>
+		<p id="amountFarms">You own 0 Farms</p>
+	</div>
+	</div>
+
+</div>
+
+<script>
+function add(){
+	cookiecount = cookiecount + 1;
+	update();
+}
+
+function save(){
+	localStorage.setItem("cookiecount",cookiecount);
+	localStorage.setItem("autoClick",autoClick);
+	localStorage.setItem("farms",farms);
+	localStorage.setItem("multiplier",multiplier);
+}
+function load(){
+	cookiecount = localStorage.getItem("cookiecount");
+	autoClick = localStorage.getItem("autoClick");
+	cookiecount = parseInt(cookiecount);
+	farms = localStorage.getItem("farms");
+	farms = parseInt(farms);
+	multiplier = localStorage.getItem("multiplier");
+	multiplier = parseInt(multiplier);
+	autoClick = parseInt(autoClick);
+	update();
+}
+function buyAutoClick(){
+	if (cookiecount >= ((autoClick + 1)*12) ){
+		cookiecount = cookiecount - ((autoClick+1) * 12) ;
+		autoClick = autoClick + 1;
+		update();
+	}
+}
+
+function buyFarm(){
+	if (cookiecount >= ((farms+1)*15)) {
+		cookiecount = cookiecount - (((farms+1)*15));
+		farms = farms + 1;
+		update();
+	}
+}
+function buyMultiplier(){
+	if (cookiecount >= ((multiplier+1)*100)) {
+		cookiecount = cookiecount - ((multiplier+1)*100);
+		multiplier = multiplier + 1;	
+		update();
+	}
+}
+</script>
+
+</body>
+</html>
